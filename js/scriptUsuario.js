@@ -201,7 +201,7 @@ class AVL {
                     <p class="card-text">${PeliActual.descripcion}</p>
                     <p class="card-text">${PeliActual.precio_Q}</p>    </div>
                     <button type="button" class="btn btn-success" id="Alquiler" name="">Alquilar</button>
-                    <button type="button" class="btn btn-success2" id="Informacion" name="">Informacion</button>
+                    <button type="button" class="btn btn-info" id="Informacion" name="${PeliActual.nombre_pelicula}">Informacion</button>
                   
                 </div>
                 </div>
@@ -212,6 +212,69 @@ class AVL {
         }
         return text
     };
+
+
+/*Vista por Pelicula*/
+
+recorrePorPelicula(temporal , nombre_pelicula) {
+    
+    var text = ""
+    var PeliculaCont = document.getElementById("EspacioPelicula")
+    // PeliculaCont.innerHTML = ""
+    var PeliActual = temporal;
+    if (PeliActual != null) {
+        //var tempPeli = PeliActual.derecho;
+      if (nombre_pelicula == PeliActual.nombre_pelicula) {
+        text += `
+        <div style="min-width:70%;"  class="card text-bg-light mb-3">
+        <div class="card-header">Pelicula</div>
+        <img class="card-img-top" src="https://github.com/susanpamela2520/picture/blob/main/306337.png?raw=true" alt="Card image cap" style="width: 200px; height: 200px  position-relative; ">
+        <div class="card-body">
+        <h5 class="card-title">${PeliActual.nombre_pelicula}</h5>
+        <p class="card-text">${PeliActual.descripcion}</p>
+        <p class="card-text">${PeliActual.precio_Q}</p>    </div>
+          <div class="input-group mb-3">
+          <button class="btn btn-outline-secondary" type="button" id="btn-Modificar">Modificar Puntuacion</button>
+          <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+          </div>
+        
+          <div class="progress" role="progressbar" aria-label=" Animated striped example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="50">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning opacity-0" style="width: 5%"></div>
+          </div>
+          <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="1" aria-valuemin="0" aria-valuemax="50">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning opacity-25" style="width: 20%"></div>
+          </div>
+          <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="2" aria-valuemin="0" aria-valuemax="50">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning opacity-50" style="width: 40%"></div>
+          </div>
+          <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="3" aria-valuemin="0" aria-valuemax="50">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning opacity-75" style="width: 60%"></div>
+          </div>
+          <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="4" aria-valuemin="0" aria-valuemax="50">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning opacity-75" style="width: 80%"></div>
+          </div>
+          <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="5" aria-valuemin="0" aria-valuemax="50">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" style="width: 100%"></div>
+          </div>
+
+        <div class="input-group mb-3">
+        <button class="btn btn-outline-secondary" type="button" id="btn-publicar">Publicar Comentario</button>
+        <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+        </div>
+
+          <button type="button" class="btn btn-success" id="Alquilar" name="">Alquilar</button>
+        </div>
+        </div>
+            `
+       }
+
+        text += this.recorrePorPelicula(PeliActual.izquierdo)
+        text += this.recorrePorPelicula(PeliActual.derecho)
+    }
+    return text
+};
+
+
 
 };
 
@@ -372,7 +435,7 @@ class listaSimpleOrden {//clase lista, donde se crea la lista simple
                 <p class="card-text">${temporal.descripcion}</p>
                 <p class="card-text">${temporal.precio_Q}</p>    </div>
                 <button type="button" class="btn btn-success" id="Alquiler" name="">Alquilar</button>
-                <button type="button" class="btn btn-success2" id="Informacion" name="">Informacion</button>
+                <button type="button" class="btn btn-info" id="Informacion" name="">Informacion</button>
               
             </div>
             </div>
@@ -385,12 +448,8 @@ class listaSimpleOrden {//clase lista, donde se crea la lista simple
 };
 
 
-
-
-
 //----------------------------------------------------------------------------------------------------------//
 //-------------------- Actores --------------------------//
-
 
 class NBinario {
 
@@ -722,15 +781,9 @@ class BinarioArbol {
         return text
     };
 
-
-
-
-
-
 };
 
 
-/*Llenado del div*/
 
 
 //------Botones---//
@@ -748,7 +801,17 @@ var PeliculaContA = document.getElementById("EspacioPelicula")
 PeliculaContA.innerHTML = `<div class="row row-cols-1 row-cols-md-4 g-5">
 ${ArbolPeliculas2A.mostrarListaSimpleOrden()} </div>
 `
-   
+var btnInfo = document.querySelectorAll("#Informacion")
+btnInfo.forEach(element => {
+    element.addEventListener("click", function() {
+        var info = element.getAttribute("name")
+        var avlPelisFinal = JSON.parse(localStorage.getItem("ArbolPelis"));
+         var avlPelisFinal2 = new AVL(avlPelisFinal.raiz);
+         var PeliculaCont = document.getElementById("EspacioPelicula")
+         PeliculaCont.innerHTML = avlPelisFinal2.recorrePorPelicula(avlPelisFinal.raiz,info)
+       
+    })
+});
 });
 
 /*Boton OrdenarDescendente Pelis*/
@@ -762,6 +825,17 @@ btnDescendente.addEventListener("click" , function(){
     PeliculaCont.innerHTML = `<div class="row row-cols-1 row-cols-md-4 g-5">
     ${ArbolPeliculas2D.mostrarListaSimpleOrden()} </div>
     `
+    var btnInfo = document.querySelectorAll("#Informacion")
+btnInfo.forEach(element => {
+    element.addEventListener("click", function() {
+        var info = element.getAttribute("name")
+        var avlPelisFinal = JSON.parse(localStorage.getItem("ArbolPelis"));
+         var avlPelisFinal2 = new AVL(avlPelisFinal.raiz);
+         var PeliculaCont = document.getElementById("EspacioPelicula")
+         PeliculaCont.innerHTML = avlPelisFinal2.recorrePorPelicula(avlPelisFinal.raiz,info)
+       
+    })
+});
 });
 
 
@@ -799,4 +873,21 @@ btnVerActoresIn.addEventListener("click" , function(){
 PeliculaCont.innerHTML = `<ol class="list-group list-group-numbered" style="margin-left: 200px; margin-right:200px;">
 ${ArbolActores.recorreActoresIn(ArbolActores.root)} </ol>
 `
+});
+
+
+/*Informacion Pelicula*/
+
+var btnInfo = document.querySelectorAll("#Informacion")
+btnInfo.forEach(element => {
+    element.addEventListener("click", function() {
+        var info = element.getAttribute("name")
+        alert(info)
+        var avlPelisFinal = JSON.parse(localStorage.getItem("ArbolPelis"));
+         var avlPelisFinal2 = new AVL(avlPelisFinal.raiz);
+         var PeliculaCont = document.getElementById("EspacioPelicula")
+         
+         PeliculaCont.innerHTML = avlPelisFinal2.recorrePorPelicula(avlPelisFinal2.raiz,info)
+    })
+   
 });

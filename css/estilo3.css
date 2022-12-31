@@ -1,0 +1,219 @@
+*{
+    padding: 0;
+    margin: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+body{
+   /* display: flex;*/
+    height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(27deg, #34495e, 50%, #2c3e50 50%);
+}
+
+.logo img{
+    width: 150px;
+    position: relative;
+    display: inline-block;
+    
+}
+
+.navegacion{
+    width: 900px;
+    margin: 30px auto;
+    background: #fff;
+}
+
+.navegacion ul{
+    list-style: none;
+}
+
+.Menu > li{
+    position: relative;
+    display: inline-block;
+}
+
+
+.Menu > li >a{
+    display: block;
+    padding: 15px 20px;
+    color: #34495e;
+    font-family: Arial, Helvetica, sans-serif;
+    text-decoration: none
+
+}
+
+.Menu li a:hover{
+    color: #ce7d35;
+    transition: all .3s;
+}
+
+
+/*Submenus*/
+
+.Sub-PeliOrden{
+    position: absolute;
+    background: #333333;
+    width: 120%;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 1.5s;
+}
+
+.Sub-PeliOrden li a{
+    display: block;
+    padding: 15px;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    text-decoration: none;
+}
+
+.Menu li:hover .Sub-PeliOrden{
+    visibility: visible;
+   position: relative;
+    opacity: 1;
+}
+
+
+.Sub-Client{
+    position: absolute;
+    background: #333333;
+    width: 120%;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 1.5s;
+}
+
+.Sub-Client li a{
+    display: block;
+    padding: 15px;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    text-decoration: none;
+}
+
+.Menu li:hover .Sub-Client{
+    visibility: visible;
+    opacity: 1;
+}
+
+.Sub-Act{
+    position: absolute;
+    background: #333333;
+    width: 120%;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 1.5s;
+}
+
+.Sub-Act li a{
+    display: block;
+    padding: 15px;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    text-decoration: none;
+}
+
+.Menu li:hover .Sub-Act{
+    visibility: visible;
+    opacity: 1;
+}
+
+.Sub-Cate{
+    position: absolute;
+    background: #333333;
+    width: 120%;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 1.5s;
+}
+
+.Sub-Cate li a{
+    display: block;
+    padding: 15px;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    text-decoration: none;
+}
+
+.Menu li:hover .Sub-Cate{
+    visibility: visible;
+    opacity: 1;
+}
+
+
+
+/*Carga Masiva*/
+
+.drop-area{
+    border: 5px dashed #ddd;
+    height: 500px;
+    width: 700px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.drop-area.active{
+    background-color: #b8d4fe;
+    color: black;
+    border: 2px dashed #618ac9;
+}
+
+.drop-area h2{
+    font-size: 30px;
+    font-weight: 500;
+    color: #000;
+}
+
+.drop-areas span{
+    font-size: 25px;
+    color: #000;
+}
+
+.drop-area button{
+    padding: 10px 25px;
+    font-size: 20px;
+    border: 0;
+    outline: none;
+    background-color: #01152c;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 20px;
+}
+
+.file-conteiner{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border: solid 1px #ddd;
+}
+
+#preview{
+    margin-top: 10px;
+}
+
+.status-text{
+    padding: 0 10px;
+}
+
+.success{
+    color: #52ad5a;
+}
+
+.fail{
+    color: red;
+}
+
+#contenedor{
+    display: block;
+    margin-top: 200px;
+    margin-left: 500px;
+}

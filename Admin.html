@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrador</title>
+    <link rel="stylesheet" href="css/estilo2.css">
+</head>
+
+<body>
+
+    <div class="contenedor1">
+
+        <header>
+
+
+            <nav class="navegacion">
+
+                <ul class="Menu">
+                    <li>
+                        <div class="logo">
+                            <img src="https://github.com/susanpamela2520/picture/blob/main/MovieCats.png?raw=true"
+                                alt="">
+                        </div>
+                    </li>
+                    <li><a href="#">Peliculas</a>
+                        <ul class="Sub-Peli">
+                            <li><a href="#">Carga Masiva</a>
+                                <!--Carga Masiva Peliculas-->
+                                <div class="drop-area" id="drop-areaPeliculas">
+                                    <h2>Arrastra tu archivo</h2>
+                                    <span>0</span>
+                                    <button>Selecciona tu archivo</button>
+                                    <input type="file" name="" id="input-Peliculas" hidden multiple>
+                                </div>
+                                <div id="preview"></div>
+                            </li>
+                            <li><a href="#" id="btn-GraficaPelis">Grafica</a> </li>
+                            <li><a href="#">Descargar Grafica </a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Clientes</a>
+                        <ul class="Sub-Client">
+                            <li><a href="#">Carga Masiva</a>
+                                <!--Carga Masiva Clientes-->
+                                <div class="drop-area" id="drop-areaClientes">
+                                    <h2>Arrastra tu archivo</h2>
+                                    <span>0</span>
+                                    <button>Selecciona tu archivo</button>
+                                    <input type="file" name="" id="input-Clientes" hidden multiple>
+                                </div>
+                                <div id="preview"></div>
+                            </li>
+                            <li><a href="#" id="btn-GraficaClient">Grafica </a></li>
+                            <li><a href="#">Descargar Grafica</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Actores</a>
+                        <ul class="Sub-Act">
+                            <li><a href="#">Carga Masiva</a>
+                                <!--Carga Masiva Actores-->
+                                <div class="drop-area" id="drop-areaActores">
+                                    <h2>Arrastra tu archivo</h2>
+                                    <span>0</span>
+                                    <button>Selecciona tu archivo</button>
+                                    <input type="file" name="" id="input-Actores" hidden multiple>
+                                </div>
+                                <div id="preview"></div>
+                            </li>
+                            <li><a href="#" id="btn-GrafActores">Grafica </a></li>
+                            <li><a href="#">Descargar Grafica </a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Categorias</a>
+                        <ul class="Sub-Cate">
+                            <li><a href="#">Carga Masiva</a>
+                                <!--Carga Masiva Categoria-->
+                                <div class="drop-area" id="drop-areaCategoria">
+                                    <h2>Arrastra tu archivo</h2>
+                                    <span>0</span>
+                                    <button>Selecciona tu archivo</button>
+                                    <input type="file" name="" id="input-fileCategoria" hidden multiple>
+                                </div>
+                            </li>
+                            <li><a href="#">Grafica</a> </li>
+                            <li><a href="#">Descargar Grafica</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">BlockChain</a>
+                    <li><a href="index.html">Salir</a>
+
+                </ul>
+            </nav>
+            <script src="https://d3js.org/d3.v5.min.js"></script>
+            <script src="https://unpkg.com/@hpcc-js/wasm@0.3.11/dist/index.min.js"></script>
+            <script src="https://unpkg.com/d3-graphviz@3.0.5/build/d3-graphviz.js"></script>
+            <script src="js/scriptAdmin.js" type="module"></script>
+        </header>
+
+    </div>
+
+    <div id="contenedor2">
+        <div id="grafica"></div>
+    </div>
+
+
+</body>
+
+</html>

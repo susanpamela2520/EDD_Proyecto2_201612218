@@ -213,11 +213,11 @@ class AVL {
         return text
     };
 
-
-
 };
 
 
+
+/*Mostrar Datos en el html*/
 var data = JSON.parse(localStorage.getItem("ArbolPelis"));
 var ArbolAVL = new AVL(data.raiz);
 console.log(ArbolAVL)
@@ -227,6 +227,166 @@ var PeliculaCont = document.getElementById("EspacioPelicula")
 PeliculaCont.innerHTML = `<div class="row row-cols-1 row-cols-md-4 g-5">
 ${ArbolAVL.recorrePelicula(ArbolAVL.raiz)} </div>
 `
+
+//------------------------------Lista de Ordenamientos--------------------------//
+
+/* LISTA PARA ORDEN DE PELICULAS*/
+
+class NodeListOrden{  
+
+    constructor(id_pelicula, nombre_pelicula, descripcion, puntuacion_star, precio_Q, paginas, categoria){
+        this.id_pelicula = id_pelicula;
+        this.nombre_pelicula = nombre_pelicula;
+        this.descripcion = descripcion;
+        this.puntuacion_star = puntuacion_star;
+        this.precio_Q = precio_Q;
+        this.paginas = paginas;
+        this.categoria = categoria;
+        this.next = null;
+
+    }
+};
+
+//Lista Simple
+class listaSimpleOrden {//clase lista, donde se crea la lista simple
+ 
+    constructor(cabeza = null, size=0){
+        this.cabeza = cabeza;
+        this.size = size;
+    }
+
+
+    //Se agregan los datos a la lista
+    
+    agregarDataOrden(id_pelicula, nombre_pelicula, descripcion, puntuacion_star, precio_Q, paginas, categoria){
+        const NuevoNodo = new NodeListOrden(id_pelicula, nombre_pelicula, descripcion, puntuacion_star, precio_Q, paginas, categoria);
+        if(!this.cabeza){
+            this.cabeza = NuevoNodo
+        }else{
+            let actual = this.cabeza;
+            while(actual.next){//Mientras haya referencia al siguiente nodo
+                if(actual.nombre_pelicula == nombre_pelicula){
+                    return 
+                }                
+                actual = actual.next; //El actual sera igual al siguiente 
+            };
+            actual.next = NuevoNodo;
+        };
+        this.size++;
+    };
+
+    ordenAscendente(){
+            var  actual = this.cabeza
+            while (actual.next != null) {
+                var temporal = actual.next
+            while (temporal != null) {
+                if (actual.nombre_pelicula > temporal.nombre_pelicula) {
+                    
+                    var id = actual.id_pelicula
+                    var name = actual.nombre_pelicula
+                    var descripcion = actual.descripcion
+                    var pts = actual.puntuacion_star
+                    var precio = actual.precio_Q
+                    var pag = actual.paginas
+                    var cat = actual.categoria
+
+                    actual.id_pelicula = temporal.id_pelicula
+                    actual.nombre_pelicula =  temporal.nombre_pelicula
+                    actual.descripcion = temporal.descripcion
+                    actual.puntuacion_star = temporal.puntuacion_star
+                    actual.precio_Q = temporal.precio_Q
+                    actual.paginas = temporal.paginas
+                    actual.categoria = temporal.categoria
+
+
+                    temporal.id_pelicula = id
+                    temporal.nombre_pelicula = name
+                    temporal.descripcion = descripcion
+                    temporal.puntuacion_star = pts
+                    temporal.precio_Q = precio
+                    temporal.paginas = pag
+                    temporal.categoria = cat
+                }
+                temporal = temporal.next
+
+            }
+                actual = actual.next
+                
+            }
+
+    }
+
+    ordenDescendente(){
+
+        var  actual = this.cabeza
+        while (actual.next != null) {
+            var temporal = actual.next
+        while (temporal != null) {
+            if (actual.nombre_pelicula < temporal.nombre_pelicula) {
+                
+                var id = actual.id_pelicula
+                var name = actual.nombre_pelicula
+                var descripcion = actual.descripcion
+                var pts = actual.puntuacion_star
+                var precio = actual.precio_Q
+                var pag = actual.paginas
+                var cat = actual.categoria
+
+                actual.id_pelicula = temporal.id_pelicula
+                actual.nombre_pelicula =  temporal.nombre_pelicula
+                actual.descripcion = temporal.descripcion
+                actual.puntuacion_star = temporal.puntuacion_star
+                actual.precio_Q = temporal.precio_Q
+                actual.paginas = temporal.paginas
+                actual.categoria = temporal.categoria
+
+
+                temporal.id_pelicula = id
+                temporal.nombre_pelicula = name
+                temporal.descripcion = descripcion
+                temporal.puntuacion_star = pts
+                temporal.precio_Q = precio
+                temporal.paginas = pag
+                temporal.categoria = cat
+            }
+            temporal = temporal.next
+
+        }
+            actual = actual.next
+            
+        }
+
+
+    }
+
+    mostrarListaSimpleOrden() {
+        var text = ""
+        var temporal = this.cabeza
+        while (temporal != null) {
+            text += `
+            <div class="col">
+              <div class="card">Pelicula
+                <img src="https://github.com/susanpamela2520/picture/blob/main/306337.png?raw=true" class="card-img-top" alt="...">
+                <div class="card-body">
+                <h5 class="card-title">${temporal.nombre_pelicula}</h5>
+                <p class="card-text">${temporal.descripcion}</p>
+                <p class="card-text">${temporal.precio_Q}</p>    </div>
+                <button type="button" class="btn btn-success" id="Alquiler" name="">Alquilar</button>
+                <button type="button" class="btn btn-success2" id="Informacion" name="">Informacion</button>
+              
+            </div>
+            </div>
+            `
+            temporal = temporal.next
+        }
+        return text
+    }
+   
+};
+
+
+
+
 
 //----------------------------------------------------------------------------------------------------------//
 //-------------------- Actores --------------------------//
@@ -492,11 +652,7 @@ class BinarioArbol {
         }
     }
 
-
-};
-
-
-  /*  recorreActores(temporal) {
+    recorreActoresPre(temporal) {
         var text = ""
         var PeliculaCont = document.getElementById("EspacioPelicula")
         // PeliculaCont.innerHTML = ""
@@ -504,34 +660,143 @@ class BinarioArbol {
         if (ActorActual != null) {
             //var tempPeli = PeliActual.derecho;
             text += `
-            <ol class="list-group list-group-numbered">
             <li class="list-group-item d-flex justify-content-between align-items-start">
             <div class="ms-2 me-auto">
             <div class="fw-bold">${ActorActual.nombre_actor}</div>
             ${ActorActual.descripcion}
             </div>
-             <span class="badge bg-primary rounded-pill">14</span>
+             <span class="badge bg-primary rounded-pill"></span>
              </li>
-             </ol>
             `
-
-            text += this.recorreActores(ActorActual.left)
-            text += this.recorreActores(ActorActual.right)
+            text += this.recorreActoresPre(ActorActual.left)
+            text += this.recorreActoresPre(ActorActual.right)
         }
         return text
-    };*/
+    };
+
+
+    recorreActoresPost(temporal) {
+        var text = ""
+        var PeliculaCont = document.getElementById("EspacioPelicula")
+        // PeliculaCont.innerHTML = ""
+        var ActorActual = temporal;
+        if (ActorActual != null) {
+            text += this.recorreActoresPost(ActorActual.left)
+            text += this.recorreActoresPost(ActorActual.right)
+            //var tempPeli = PeliActual.derecho;
+            text += `
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+            <div class="fw-bold">${ActorActual.nombre_actor}</div>
+            ${ActorActual.descripcion}
+            </div>
+             <span class="badge bg-primary rounded-pill"></span>
+             </li>
+            `
+        }
+        return text
+    };
+
+
+
+    recorreActoresIn(temporal) {
+        var text = ""
+        var PeliculaCont = document.getElementById("EspacioPelicula")
+        // PeliculaCont.innerHTML = ""
+        var ActorActual = temporal;
+        if (ActorActual != null) {
+            text += this.recorreActoresIn(ActorActual.left)
+            
+            //var tempPeli = PeliActual.derecho;
+            text += `
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+            <div class="fw-bold">${ActorActual.nombre_actor}</div>
+            ${ActorActual.descripcion}
+            </div>
+             <span class="badge bg-primary rounded-pill"></span>
+             </li>
+            `
+            text += this.recorreActoresIn(ActorActual.right)
+        }
+        return text
+    };
 
 
 
 
 
-//var data = JSON.parse(localStorage.getItem("ArbolActores"));
-//var ArbolBB = new BinarioArbol(data.root);
-//console.log(ArbolBB)
-//var PeliculaCont = document.getElementById("EspacioPelicula")
+
+};
+
+
+/*Llenado del div*/
+
+
+//------Botones---//
 
 
 
+/*Boton OrdenarAscendente Pelis*/
+const btnAscendente = document.getElementById("btn-OrdenAscendente")
+btnAscendente.addEventListener("click" , function(){
+    var dataA = JSON.parse(localStorage.getItem("ListaPelisOrden"));  
+    var ArbolPeliculas2A = new listaSimpleOrden(dataA.cabeza, dataA.size);
+    ArbolPeliculas2A.ordenAscendente()
 
-//------Botones Ascendenes---//
+var PeliculaContA = document.getElementById("EspacioPelicula")
+PeliculaContA.innerHTML = `<div class="row row-cols-1 row-cols-md-4 g-5">
+${ArbolPeliculas2A.mostrarListaSimpleOrden()} </div>
+`
+   
+});
 
+/*Boton OrdenarDescendente Pelis*/
+const btnDescendente = document.getElementById("btn-OrdenDescendente")
+btnDescendente.addEventListener("click" , function(){
+    var dataD = JSON.parse(localStorage.getItem("ListaPelisOrden"));   
+    var ArbolPeliculas2D = new listaSimpleOrden(dataD.cabeza, dataD.size);
+    ArbolPeliculas2D.ordenDescendente()
+   
+    var PeliculaCont = document.getElementById("EspacioPelicula")
+    PeliculaCont.innerHTML = `<div class="row row-cols-1 row-cols-md-4 g-5">
+    ${ArbolPeliculas2D.mostrarListaSimpleOrden()} </div>
+    `
+});
+
+
+/*Ver Actores PreOrden*/
+
+const btnVerActores = document.getElementById("btn-pre")
+btnVerActores.addEventListener("click" , function(){
+    var data = JSON.parse(localStorage.getItem("arbolActores"));   
+    var ArbolActores= new BinarioArbol(data.root);
+    var PeliculaCont = document.getElementById("EspacioPelicula")
+PeliculaCont.innerHTML = `<ol class="list-group list-group-numbered" style="margin-left: 200px; margin-right:200px;">
+${ArbolActores.recorreActoresPre(ArbolActores.root)} </ol>
+`
+});
+
+/*Ver Actores PostOrden*/
+
+const btnVerActoresPost = document.getElementById("btn-post")
+btnVerActoresPost.addEventListener("click" , function(){
+    var data = JSON.parse(localStorage.getItem("arbolActores"));   
+    var ArbolActores= new BinarioArbol(data.root);
+    var PeliculaCont = document.getElementById("EspacioPelicula")
+PeliculaCont.innerHTML = `<ol class="list-group list-group-numbered" style="margin-left: 200px; margin-right:200px;">
+${ArbolActores.recorreActoresPost(ArbolActores.root)} </ol>
+`
+});
+
+/*Ver Actores InOrden*/
+
+const btnVerActoresIn = document.getElementById("btn-in")
+btnVerActoresIn.addEventListener("click" , function(){
+    var data = JSON.parse(localStorage.getItem("arbolActores"));   
+    var ArbolActores= new BinarioArbol(data.root);
+    var PeliculaCont = document.getElementById("EspacioPelicula")
+PeliculaCont.innerHTML = `<ol class="list-group list-group-numbered" style="margin-left: 200px; margin-right:200px;">
+${ArbolActores.recorreActoresIn(ArbolActores.root)} </ol>
+`
+});

@@ -27,16 +27,22 @@ function processFile(file){
                 //Arbol1 //
 
                 var ArbolPeliculasFinal = JSON.parse(localStorage.getItem("ArbolPelis")); //error
-                var ArbolPeliculas2 = new AVL(ArbolPeliculasFinal.raiz);    //ArbolPeliculasFinal.raiz            //error
+                var ArbolPeliculas2 = new AVL(ArbolPeliculasFinal.raiz); 
+                
+                var ListaPeliculasFinal = JSON.parse(localStorage.getItem("ListaPelisOrden"));
+                var ListaPeliculas = new listaSimpleOrden(ListaPeliculasFinal.cabeza, ListaPeliculasFinal.size)
             
                 archivo.forEach(element => {                    
                     ArbolPeliculas2.insertar(element.id_pelicula, element.nombre_pelicula, element.descripcion, element.puntuacion_star, element.precion_Q, element.paginas, element.categoria);
+                    ListaPeliculas.agregarDataOrden(element.id_pelicula, element.nombre_pelicula, element.descripcion, element.puntuacion_star, element.precion_Q, element.paginas, element.categoria);
                     
                     //console.log("insertando id "+element.id_pelicula);
                 });
 
                 //Arbol1
+             
                 localStorage.setItem("ArbolPelis", JSON.stringify(ArbolPeliculas2));
+                localStorage.setItem("ListaPelisOrden",JSON.stringify(ListaPeliculas));
               
            // }
         });   
@@ -237,6 +243,142 @@ btnGrafica1.addEventListener("click" , function(){
     ArbolAVL.grafoAvl_();
 
 });
+
+
+/* LISTA PARA ORDEN DE PELICULAS*/
+
+class NodeListOrden{  
+
+    constructor(id_pelicula, nombre_pelicula, descripcion, puntuacion_star, precio_Q, paginas, categoria){
+        this.id_pelicula = id_pelicula;
+        this.nombre_pelicula = nombre_pelicula;
+        this.descripcion = descripcion;
+        this.puntuacion_star = puntuacion_star;
+        this.precio_Q = precio_Q;
+        this.paginas = paginas;
+        this.categoria = categoria;
+        this.next = null;
+
+    }
+};
+
+//Lista Simple
+class listaSimpleOrden {//clase lista, donde se crea la lista simple
+ 
+    constructor(cabeza = null, size=0){
+        this.cabeza = cabeza;
+        this.size = size;
+    }
+
+
+    //Se agregan los datos a la lista
+    
+    agregarDataOrden(id_pelicula, nombre_pelicula, descripcion, puntuacion_star, precio_Q, paginas, categoria){
+        const NuevoNodo = new NodeListOrden(id_pelicula, nombre_pelicula, descripcion, puntuacion_star, precio_Q, paginas, categoria);
+        if(!this.cabeza){
+            this.cabeza = NuevoNodo
+        }else{
+            let actual = this.cabeza;
+            while(actual.next){//Mientras haya referencia al siguiente nodo
+                if(actual.nombre_pelicula == nombre_pelicula){
+                    return 
+                }                
+                actual = actual.next; //El actual sera igual al siguiente 
+            };
+            actual.next = NuevoNodo;
+        };
+        this.size++;
+    };
+
+    ordenAscendente(){
+            var  actual = this.cabeza
+            while (actual.next != null) {
+                var temporal = actual.next
+            while (temporal != null) {
+                if (actual.nombre_pelicula > temporal.nombre_pelicula) {
+                    
+                    var id = actual.id_pelicula
+                    var name = actual.nombre_pelicula
+                    var descripcion = actual.descripcion
+                    var pts = actual.puntuacion_star
+                    var precio = actual.precio_Q
+                    var pag = actual.paginas
+                    var cat = actual.categoria
+
+                    actual.id_pelicula = temporal.id_pelicula
+                    actual.nombre_pelicula =  temporal.nombre_pelicula
+                    actual.descripcion = temporal.descripcion
+                    actual.puntuacion_star = temporal.puntuacion_star
+                    actual.precio_Q = temporal.precio_Q
+                    actual.paginas = temporal.paginas
+                    actual.categoria = temporal.categoria
+
+
+                    temporal.id_pelicula = id
+                    temporal.nombre_pelicula = name
+                    temporal.descripcion = descripcion
+                    temporal.puntuacion_star = pts
+                    temporal.precio_Q = precio
+                    temporal.paginas = pag
+                    temporal.categoria = cat
+                }
+                temporal = temporal.next
+
+            }
+                actual = actual.next
+                
+            }
+
+    }
+
+    ordenDescendente(){
+
+        var  actual = this.cabeza
+        while (actual.next != null) {
+            var temporal = actual.next
+        while (temporal != null) {
+            if (actual.nombre_pelicula < temporal.nombre_pelicula) {
+                
+                var id = actual.id_pelicula
+                var name = actual.nombre_pelicula
+                var descripcion = actual.descripcion
+                var pts = actual.puntuacion_star
+                var precio = actual.precio_Q
+                var pag = actual.paginas
+                var cat = actual.categoria
+
+                actual.id_pelicula = temporal.id_pelicula
+                actual.nombre_pelicula =  temporal.nombre_pelicula
+                actual.descripcion = temporal.descripcion
+                actual.puntuacion_star = temporal.puntuacion_star
+                actual.precio_Q = temporal.precio_Q
+                actual.paginas = temporal.paginas
+                actual.categoria = temporal.categoria
+
+
+                temporal.id_pelicula = id
+                temporal.nombre_pelicula = name
+                temporal.descripcion = descripcion
+                temporal.puntuacion_star = pts
+                temporal.precio_Q = precio
+                temporal.paginas = pag
+                temporal.categoria = cat
+            }
+            temporal = temporal.next
+
+        }
+            actual = actual.next
+            
+        }
+
+
+    }
+   
+};
+
+
+
+
 
 
 /* ================================================================================================= */
@@ -729,3 +871,12 @@ if (localStorage.getItem("ArbolPelis") == null) {
     console.log(JSON.parse(localStorage.getItem("ArbolPelis")));
 };
 
+
+//Lista Orden Peliculas//
+
+if (localStorage.getItem("ListaPelisOrden") == null) {
+    var ListPelis = new listaSimpleOrden();
+    localStorage.setItem("ListaPelisOrden", JSON.stringify(ListPelis));
+} else {
+    console.log(JSON.parse(localStorage.getItem("ListaPelisOrden")));
+};

@@ -76,6 +76,7 @@ formLogin.addEventListener("submit" , function(event){
     var listaUsuariosFinal = JSON.parse(localStorage.getItem("listaSimpleUsuarios"));
     var listaUsuarios2 = new listaSimple(listaUsuariosFinal.cabeza, listaUsuariosFinal.size);
     var usuariolog = listaUsuarios2.buscarData(usuario, pass);
+    localStorage.setItem("UsuarioActivo", JSON.stringify(usuariolog));
     
     if(usuariolog != null){   
         if(usuariolog.admin){            

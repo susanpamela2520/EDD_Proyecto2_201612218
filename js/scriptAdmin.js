@@ -60,6 +60,7 @@ class NodoAVL{
         this.precio_Q = precio_Q;
         this.paginas = paginas;
         this.categoria = categoria
+        this.comentario = []
 
         this.izquierdo = null;
         this.derecho = null;

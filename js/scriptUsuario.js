@@ -11,6 +11,8 @@ class NodoAVL {
         this.precio_Q = precio_Q;
         this.paginas = paginas;
         this.categoria = categoria
+        this.comentario = []
+
 
         this.izquierdo = null;
         this.derecho = null;
@@ -185,6 +187,9 @@ class AVL {
     }
 
 
+
+
+
     recorrePelicula(temporal) {
         var text = ""
         var PeliculaCont = document.getElementById("EspacioPelicula")
@@ -214,65 +219,99 @@ class AVL {
     };
 
 
-/*Vista por Pelicula*/
+    /*Vista por Pelicula*/
 
-recorrePorPelicula(temporal , nombre_pelicula) {
-    
-    var text = ""
-    var PeliculaCont = document.getElementById("EspacioPelicula")
-    // PeliculaCont.innerHTML = ""
-    var PeliActual = temporal;
-    if (PeliActual != null) {
-        //var tempPeli = PeliActual.derecho;
-      if (nombre_pelicula == PeliActual.nombre_pelicula) {
-        text += `
+    recorrePorPelicula(temporal, nombre_pelicula) {
+
+        var text = ""
+        //var PeliculaCont = document.getElementById("EspacioPelicula")
+        // PeliculaCont.innerHTML = ""
+        var PeliActual = temporal;
+        if (PeliActual != null) {
+            //var tempPeli = PeliActual.derecho;
+            if (nombre_pelicula == PeliActual.nombre_pelicula) {
+                text += `
         <div style="min-width:70%;"  class="card text-bg-light mb-3">
         <div class="card-header">Pelicula</div>
         <img class="card-img-top" src="https://github.com/susanpamela2520/picture/blob/main/306337.png?raw=true" alt="Card image cap" style="width: 200px; height: 200px  position-relative; ">
         <div class="card-body">
         <h5 class="card-title">${PeliActual.nombre_pelicula}</h5>
         <p class="card-text">${PeliActual.descripcion}</p>
-        <p class="card-text">${PeliActual.precio_Q}</p>    </div>
+        <p class="card-text">Q. ${PeliActual.precio_Q}</p>    </div>
           <div class="input-group mb-3">
-          <button class="btn btn-outline-secondary" type="button" id="btn-Modificar">Modificar Puntuacion</button>
-          <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+          <button class="btn btn-outline-secondary" type="button" name="${PeliActual.nombre_pelicula}" id="btn-Modificar">Modificar Puntuacion</button>
+          <input type="text" id="text-stars" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
           </div>
-        
+          <p class="card-text">Estrellas de Pelicula: ${PeliActual.puntuacion_star} </p>
           <div class="progress" role="progressbar" aria-label=" Animated striped example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="50">
-          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning opacity-0" style="width: 5%"></div>
-          </div>
-          <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="1" aria-valuemin="0" aria-valuemax="50">
-          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning opacity-25" style="width: 20%"></div>
-          </div>
-          <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="2" aria-valuemin="0" aria-valuemax="50">
-          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning opacity-50" style="width: 40%"></div>
-          </div>
-          <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="3" aria-valuemin="0" aria-valuemax="50">
-          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning opacity-75" style="width: 60%"></div>
-          </div>
-          <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="4" aria-valuemin="0" aria-valuemax="50">
-          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning opacity-75" style="width: 80%"></div>
-          </div>
-          <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="5" aria-valuemin="0" aria-valuemax="50">
-          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" style="width: 100%"></div>
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning opacity-0" style="width: 0%"></div>
           </div>
 
+          <div class="progress" role="progressbar" aria-label=" Animated striped example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="50">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning " style="width: ${20 * parseInt(PeliActual.puntuacion_star)}%"></div>
+          </div>
+
+          <div class="progress" role="progressbar" aria-label=" Animated striped example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="50">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning opacity-0" style="width: 0%"></div>
+          </div>
+
+          ${mostrarComentario(PeliActual.comentario)} 
+
         <div class="input-group mb-3">
-        <button class="btn btn-outline-secondary" type="button" id="btn-publicar">Publicar Comentario</button>
-        <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+        <button class="btn btn-outline-secondary" type="button" id="btn-publicar" name:"${PeliActual.nombre_pelicula}">Publicar Comentario</button>
+        <input type="text" class="form-control" id="comentarioPublic"  placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
         </div>
 
           <button type="button" class="btn btn-success" id="Alquilar" name="">Alquilar</button>
         </div>
         </div>
             `
-       }
+                   
+            }
+            text += this.recorrePorPelicula(PeliActual.izquierdo, nombre_pelicula)
+            text += this.recorrePorPelicula(PeliActual.derecho, nombre_pelicula)
 
-        text += this.recorrePorPelicula(PeliActual.izquierdo)
-        text += this.recorrePorPelicula(PeliActual.derecho)
-    }
-    return text
-};
+        }
+        return text
+    };
+
+
+
+
+    calificacion(raiz, nombre_pelicula, puntuacion_star) {
+
+        if (raiz != null) {
+            if (raiz.nombre_pelicula == nombre_pelicula) {
+                raiz.puntuacion_star = puntuacion_star
+                alert("cambio xd")
+            } else {
+                raiz.izquierdo = this.calificacion(raiz.izquierdo, nombre_pelicula, puntuacion_star)
+                raiz.derecho = this.calificacion(raiz.derecho, nombre_pelicula, puntuacion_star)
+
+            }
+
+        }
+        return raiz;
+    };
+
+
+
+    comentarios(raiz, nombre_pelicula, comentario) {
+
+        if (raiz != null) {
+            if (raiz.nombre_pelicula == nombre_pelicula) {
+                raiz.comentario.push(new NodeListComent(JSON.parse(localStorage.getItem("UsuarioActivo")).nombre_usuario, comentario))
+                alert("se guardo xd")
+            } else {
+              this.comentarios(raiz.izquierdo, nombre_pelicula, comentario)
+              this.comentarios(raiz.derecho, nombre_pelicula, comentario)
+
+            }
+
+        }
+
+    };
+
 
 
 
@@ -295,9 +334,9 @@ ${ArbolAVL.recorrePelicula(ArbolAVL.raiz)} </div>
 
 /* LISTA PARA ORDEN DE PELICULAS*/
 
-class NodeListOrden{  
+class NodeListOrden {
 
-    constructor(id_pelicula, nombre_pelicula, descripcion, puntuacion_star, precio_Q, paginas, categoria){
+    constructor(id_pelicula, nombre_pelicula, descripcion, puntuacion_star, precio_Q, paginas, categoria) {
         this.id_pelicula = id_pelicula;
         this.nombre_pelicula = nombre_pelicula;
         this.descripcion = descripcion;
@@ -312,25 +351,25 @@ class NodeListOrden{
 
 //Lista Simple
 class listaSimpleOrden {//clase lista, donde se crea la lista simple
- 
-    constructor(cabeza = null, size=0){
+
+    constructor(cabeza = null, size = 0) {
         this.cabeza = cabeza;
         this.size = size;
     }
 
 
     //Se agregan los datos a la lista
-    
-    agregarDataOrden(id_pelicula, nombre_pelicula, descripcion, puntuacion_star, precio_Q, paginas, categoria){
+
+    agregarDataOrden(id_pelicula, nombre_pelicula, descripcion, puntuacion_star, precio_Q, paginas, categoria) {
         const NuevoNodo = new NodeListOrden(id_pelicula, nombre_pelicula, descripcion, puntuacion_star, precio_Q, paginas, categoria);
-        if(!this.cabeza){
+        if (!this.cabeza) {
             this.cabeza = NuevoNodo
-        }else{
+        } else {
             let actual = this.cabeza;
-            while(actual.next){//Mientras haya referencia al siguiente nodo
-                if(actual.nombre_pelicula == nombre_pelicula){
-                    return 
-                }                
+            while (actual.next) {//Mientras haya referencia al siguiente nodo
+                if (actual.nombre_pelicula == nombre_pelicula) {
+                    return
+                }
                 actual = actual.next; //El actual sera igual al siguiente 
             };
             actual.next = NuevoNodo;
@@ -338,13 +377,13 @@ class listaSimpleOrden {//clase lista, donde se crea la lista simple
         this.size++;
     };
 
-    ordenAscendente(){
-            var  actual = this.cabeza
-            while (actual.next != null) {
-                var temporal = actual.next
+    ordenAscendente() {
+        var actual = this.cabeza
+        while (actual.next != null) {
+            var temporal = actual.next
             while (temporal != null) {
                 if (actual.nombre_pelicula > temporal.nombre_pelicula) {
-                    
+
                     var id = actual.id_pelicula
                     var name = actual.nombre_pelicula
                     var descripcion = actual.descripcion
@@ -354,7 +393,7 @@ class listaSimpleOrden {//clase lista, donde se crea la lista simple
                     var cat = actual.categoria
 
                     actual.id_pelicula = temporal.id_pelicula
-                    actual.nombre_pelicula =  temporal.nombre_pelicula
+                    actual.nombre_pelicula = temporal.nombre_pelicula
                     actual.descripcion = temporal.descripcion
                     actual.puntuacion_star = temporal.puntuacion_star
                     actual.precio_Q = temporal.precio_Q
@@ -373,50 +412,50 @@ class listaSimpleOrden {//clase lista, donde se crea la lista simple
                 temporal = temporal.next
 
             }
-                actual = actual.next
-                
-            }
+            actual = actual.next
+
+        }
 
     }
 
-    ordenDescendente(){
+    ordenDescendente() {
 
-        var  actual = this.cabeza
+        var actual = this.cabeza
         while (actual.next != null) {
             var temporal = actual.next
-        while (temporal != null) {
-            if (actual.nombre_pelicula < temporal.nombre_pelicula) {
-                
-                var id = actual.id_pelicula
-                var name = actual.nombre_pelicula
-                var descripcion = actual.descripcion
-                var pts = actual.puntuacion_star
-                var precio = actual.precio_Q
-                var pag = actual.paginas
-                var cat = actual.categoria
+            while (temporal != null) {
+                if (actual.nombre_pelicula < temporal.nombre_pelicula) {
 
-                actual.id_pelicula = temporal.id_pelicula
-                actual.nombre_pelicula =  temporal.nombre_pelicula
-                actual.descripcion = temporal.descripcion
-                actual.puntuacion_star = temporal.puntuacion_star
-                actual.precio_Q = temporal.precio_Q
-                actual.paginas = temporal.paginas
-                actual.categoria = temporal.categoria
+                    var id = actual.id_pelicula
+                    var name = actual.nombre_pelicula
+                    var descripcion = actual.descripcion
+                    var pts = actual.puntuacion_star
+                    var precio = actual.precio_Q
+                    var pag = actual.paginas
+                    var cat = actual.categoria
+
+                    actual.id_pelicula = temporal.id_pelicula
+                    actual.nombre_pelicula = temporal.nombre_pelicula
+                    actual.descripcion = temporal.descripcion
+                    actual.puntuacion_star = temporal.puntuacion_star
+                    actual.precio_Q = temporal.precio_Q
+                    actual.paginas = temporal.paginas
+                    actual.categoria = temporal.categoria
 
 
-                temporal.id_pelicula = id
-                temporal.nombre_pelicula = name
-                temporal.descripcion = descripcion
-                temporal.puntuacion_star = pts
-                temporal.precio_Q = precio
-                temporal.paginas = pag
-                temporal.categoria = cat
+                    temporal.id_pelicula = id
+                    temporal.nombre_pelicula = name
+                    temporal.descripcion = descripcion
+                    temporal.puntuacion_star = pts
+                    temporal.precio_Q = precio
+                    temporal.paginas = pag
+                    temporal.categoria = cat
+                }
+                temporal = temporal.next
+
             }
-            temporal = temporal.next
-
-        }
             actual = actual.next
-            
+
         }
 
 
@@ -434,8 +473,8 @@ class listaSimpleOrden {//clase lista, donde se crea la lista simple
                 <h5 class="card-title">${temporal.nombre_pelicula}</h5>
                 <p class="card-text">${temporal.descripcion}</p>
                 <p class="card-text">${temporal.precio_Q}</p>    </div>
-                <button type="button" class="btn btn-success" id="Alquiler" name="">Alquilar</button>
-                <button type="button" class="btn btn-info" id="Informacion" name="">Informacion</button>
+                <button type="button" class="btn btn-success" id="Alquiler" name="${temporal.nombre_pelicula}">Alquilar</button>
+                <button type="button" class="btn btn-info" id="Informacion" name="${temporal.nombre_pelicula}">Informacion</button>
               
             </div>
             </div>
@@ -444,9 +483,82 @@ class listaSimpleOrden {//clase lista, donde se crea la lista simple
         }
         return text
     }
-   
+
 };
 
+
+//-------------------Lista Simple Comentarios----------------------//
+
+
+class NodeListComent {
+
+    constructor(nombre_clientePost, comentario) {
+
+        this.nombre_clientePost = nombre_clientePost;
+        this.comentario = comentario;
+        this.next = null;
+
+    }
+};
+
+//Lista Simple
+class listaSimpleComent {//clase lista, donde se crea la lista simple
+
+    constructor(cabeza = null, size = 0) {
+        this.cabeza = cabeza;
+        this.size = size;
+    }
+
+
+    //Se agregan los datos a la lista
+
+    agregarDataComent(nombre_clientePost, comentario) {
+        const NuevoNodo2 = new NodeListComent(nombre_clientePost, comentario);
+        if (!this.cabeza) {
+            this.cabeza = NuevoNodo2
+        } else {
+            let actual = this.cabeza;
+            while (actual.next) {//Mientras haya referencia al siguiente nodo
+
+                actual = actual.next; //El actual sera igual al siguiente 
+            };
+            actual.next = NuevoNodo2;
+        };
+        this.size++;
+    };
+
+
+
+}
+
+
+//Recorrido Arreglo//
+
+function mostrarComentario(Arreglo) {
+    var text = `<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Usuario</th>
+        <th scope="col">Comentario</th>
+      </tr>
+    </thead>
+    <tbody>`
+        Arreglo.forEach(temporal => {
+            text += `
+       
+<tr>
+  <th scope="row">${temporal.nombre_clientePost}</th>
+  <td>${temporal.comentario}</td>
+</tr>
+        `
+        });
+        
+      
+    text += `</tbody>
+    </table>`
+
+    return text
+};
 
 //----------------------------------------------------------------------------------------------------------//
 //-------------------- Actores --------------------------//
@@ -765,7 +877,7 @@ class BinarioArbol {
         var ActorActual = temporal;
         if (ActorActual != null) {
             text += this.recorreActoresIn(ActorActual.left)
-            
+
             //var tempPeli = PeliActual.derecho;
             text += `
             <li class="list-group-item d-flex justify-content-between align-items-start">
@@ -784,6 +896,251 @@ class BinarioArbol {
 };
 
 
+//---------------------Merkle-------------------------------------------//
+
+class Bloque {
+    constructor(index, date, data, nonce, prevHash, rootmerkle, hash) {
+        this.index = index
+        this.date = date;
+        this.data = data;
+        this.nonce = nonce;
+        this.prevHash = prevHash;
+        this.rootmerkle = rootmerkle;
+        this.hash = hash;
+    }
+}
+
+class Node {
+    constructor(_value) {
+        this.value = _value;
+        this.next = null;
+        this.before = null;
+    }
+}
+
+class BlockChain {
+    constructor() {
+        this.head = null;
+        this.tail = null;
+        this.size = 0;
+    }
+
+    generarBloque() {
+        // Debe ir DD-MM-YY-::HH:MM:SS
+        var date = new Date(Date.now());//revisar formato
+        //Hash Anterior
+        var prevHash = "";
+        if (this.isEmpty()) {
+            prevHash = "00"
+        } else {
+            prevHash = this.tail.value.hash
+        }
+        //generamos el arbol
+        merkle.auth()
+        //Data revisar
+        var data = merkle.datablock;
+        var rootmerkle = merkle.tophash.hash
+        merkle.clear();
+        var nonce = 0;
+        var hash = "";
+
+        //prueba de trabajo
+        while (!hash.startsWith("00")) {
+            hash = sha256(this.size + date + prevHash + rootmerkle + nonce);
+            nonce += 1;
+        }
+        var data = new Bloque(this.size, date, data, nonce, prevHash, rootmerkle, hash);
+        this.insert(data)
+    }
+
+    isEmpty() {
+        return this.head === null
+    }
+
+    insert(_value) {
+        var newNode = new Node(_value);
+        this.size++;
+
+        if (this.head != null) {
+            newNode.before = this.tail
+            this.tail.next = newNode;
+            this.tail = newNode;
+        } else {
+            this.head = newNode;
+            this.tail = newNode;
+        }
+    }
+
+    delete(_value) {
+        var temporal = this.head;
+        if (temporal.value == _value) {
+            this.head = temporal.next;
+            if (this.head != null) {
+                this.head.before = null;
+            }
+        } else {
+            while (temporal != null) {
+                if (temporal.value == _value) {
+                    var anterior = temporal.before;
+                    anterior.next = temporal.next
+                    if (temporal.next != null) {
+                        temporal.next.before = anterior;
+                    }
+                    if (this.tail == temporal) {
+                        this.tail = temporal.before
+                    }
+                    break;
+                }
+                temporal = temporal.next;
+            }
+        }
+    }
+
+    print() {
+        var temporal = this.head;
+        while (temporal != null) {
+            console.log(temporal.value);
+            temporal = temporal.next;
+        }
+    }
+
+    print2() {
+        var temporal = this.tail;
+        while (temporal != null) {
+            console.log(temporal.value);
+            temporal = temporal.before;
+        }
+    }
+}
+
+
+var blockChain = new BlockChain();
+var time = 300000
+//var time = 60000
+
+var as = setInterval(() => {
+
+    blockChain.generarBloque();
+    console.log(blockChain)
+
+}, time)
+
+
+function generarBloque() {
+    blockChain.generarBloque();
+    console.log(blockChain)
+}
+
+
+//-----Merkle 2 -----//
+
+class DataNode {
+    constructor(value) {
+        this.value = value
+    }
+}
+
+class HashNode {
+    constructor(hash) {
+        this.hash = hash
+        this.left = null
+        this.right = null
+    }
+}
+
+class Merkle {
+    constructor() {
+        this.tophash = null
+        this.size = 0;
+
+        this.datablock = []
+        this.datablock = []
+        this.dot = ''
+    }
+
+    add(value) {
+
+        this.datablock[this.size] = new DataNode(value)
+        this.size++;
+    }
+
+    createTree(exp) {
+        this.tophash = new HashNode(0)
+        this._createTree(this.tophash, exp)
+    }
+
+    _createTree(tmp, exp) {
+        if (exp > 0) {
+            tmp.left = new HashNode(0)
+            tmp.right = new HashNode(0)
+            this._createTree(tmp.left, exp - 1)
+            this._createTree(tmp.right, exp - 1)
+        }
+    }
+
+    genHash(tmp, n) { // postorder
+        if (tmp != null) {
+            this.genHash(tmp.left, n)
+            this.genHash(tmp.right, n)
+
+            if (tmp.left == null && tmp.right == null) {
+                tmp.left = this.datablock[n - index--]
+                //tmp.hash =sha256(tmp.left.value.user+" - "tmp.left.value.movie)
+                tmp.hash = sha256(tmp.left.value + "")
+            } else {
+                tmp.hash = sha256(tmp.left.value + "" + tmp.right.value)
+            }
+        }
+    }
+
+    auth() {
+        console.log(this.datablock)
+
+        var exp = 1
+        while (Math.pow(2, exp) < this.datablock.length) {
+            exp += 1
+        }
+        for (var i = this.datablock.length; i < Math.pow(2, exp); i++) {
+            this.datablock.push(1)
+        }
+        index = Math.pow(2, exp)
+        this.createTree(exp)
+        this.genHash(this.tophash, Math.pow(2, exp))
+    }
+
+    clear() {
+        this.tophash = null
+        this.datablock = []
+    }
+}
+
+var index = 0
+
+
+var merkle = new Merkle()
+
+class alquiler {
+    constructor(movie, user, precio) {
+        this.movie = movie
+        this.user = user
+        this.precio = precio
+    }
+}
+
+function alquilar(data) {
+    var num = Math.floor(Math.random() * 100);
+    console.log(data, num)
+    merkle.add(num)
+    console.log(merkle)
+}
+
+function mostrar() {
+    merkle.auth()
+    console.log(merkle)
+}
+
+
+
 
 
 //------Botones---//
@@ -792,61 +1149,121 @@ class BinarioArbol {
 
 /*Boton OrdenarAscendente Pelis*/
 const btnAscendente = document.getElementById("btn-OrdenAscendente")
-btnAscendente.addEventListener("click" , function(){
-    var dataA = JSON.parse(localStorage.getItem("ListaPelisOrden"));  
+btnAscendente.addEventListener("click", function () {
+    var dataA = JSON.parse(localStorage.getItem("ListaPelisOrden"));
     var ArbolPeliculas2A = new listaSimpleOrden(dataA.cabeza, dataA.size);
     ArbolPeliculas2A.ordenAscendente()
 
-var PeliculaContA = document.getElementById("EspacioPelicula")
-PeliculaContA.innerHTML = `<div class="row row-cols-1 row-cols-md-4 g-5">
+    var PeliculaContA = document.getElementById("EspacioPelicula")
+    PeliculaContA.innerHTML = `<div class="row row-cols-1 row-cols-md-4 g-5">
 ${ArbolPeliculas2A.mostrarListaSimpleOrden()} </div>
 `
-var btnInfo = document.querySelectorAll("#Informacion")
-btnInfo.forEach(element => {
-    element.addEventListener("click", function() {
-        var info = element.getAttribute("name")
-        var avlPelisFinal = JSON.parse(localStorage.getItem("ArbolPelis"));
-         var avlPelisFinal2 = new AVL(avlPelisFinal.raiz);
-         var PeliculaCont = document.getElementById("EspacioPelicula")
-         PeliculaCont.innerHTML = avlPelisFinal2.recorrePorPelicula(avlPelisFinal.raiz,info)
-       
-    })
-});
+    var btnInfo = document.querySelectorAll("#Informacion")
+    btnInfo.forEach(element => {
+        element.addEventListener("click", function () {
+            var info = element.getAttribute("name")
+
+            var avlPelisFinal = JSON.parse(localStorage.getItem("ArbolPelis"));
+            var avlPelisFinal2 = new AVL(avlPelisFinal.raiz);
+            var PeliculaCont = document.getElementById("EspacioPelicula")
+            PeliculaCont.innerHTML = avlPelisFinal2.recorrePorPelicula(avlPelisFinal.raiz, info)
+
+            var Boton
+            Boton = document.getElementById("btn-Modificar")
+            Boton.addEventListener("click", function () {
+                var calificacion = JSON.parse(localStorage.getItem("ArbolPelis"));
+                var calificacionFinal = new AVL(calificacion.raiz);
+                var puntuacion
+                puntuacion = document.getElementById("text-stars").value
+                calificacionFinal.raiz = calificacionFinal.calificacion(calificacionFinal.raiz, info, puntuacion)
+                PeliculaCont.innerHTML = calificacionFinal.recorrePorPelicula(calificacionFinal.raiz, info)
+                localStorage.setItem("ArbolPelis", JSON.stringify(calificacionFinal));
+
+            })
+            
+            var Boton2
+            Boton2 = document.getElementById("btn-publicar")
+            Boton2.addEventListener("click", function () {
+                
+                var coment = JSON.parse(localStorage.getItem("ArbolPelis"));
+                var comentarioFinal = new AVL(coment.raiz);
+                var comentario
+                comentario = document.getElementById("comentarioPublic").value
+               comentarioFinal.comentarios(comentarioFinal.raiz, info, comentario)
+                localStorage.setItem("ArbolPelis", JSON.stringify(comentarioFinal));
+    
+                PeliculaCont.innerHTML = comentarioFinal.recorrePorPelicula(comentarioFinal.raiz, info)
+               
+            })
+
+
+
+        })
+    });
 });
 
 /*Boton OrdenarDescendente Pelis*/
 const btnDescendente = document.getElementById("btn-OrdenDescendente")
-btnDescendente.addEventListener("click" , function(){
-    var dataD = JSON.parse(localStorage.getItem("ListaPelisOrden"));   
+btnDescendente.addEventListener("click", function () {
+    var dataD = JSON.parse(localStorage.getItem("ListaPelisOrden"));
     var ArbolPeliculas2D = new listaSimpleOrden(dataD.cabeza, dataD.size);
     ArbolPeliculas2D.ordenDescendente()
-   
+
     var PeliculaCont = document.getElementById("EspacioPelicula")
     PeliculaCont.innerHTML = `<div class="row row-cols-1 row-cols-md-4 g-5">
     ${ArbolPeliculas2D.mostrarListaSimpleOrden()} </div>
     `
     var btnInfo = document.querySelectorAll("#Informacion")
-btnInfo.forEach(element => {
-    element.addEventListener("click", function() {
-        var info = element.getAttribute("name")
-        var avlPelisFinal = JSON.parse(localStorage.getItem("ArbolPelis"));
-         var avlPelisFinal2 = new AVL(avlPelisFinal.raiz);
-         var PeliculaCont = document.getElementById("EspacioPelicula")
-         PeliculaCont.innerHTML = avlPelisFinal2.recorrePorPelicula(avlPelisFinal.raiz,info)
-       
-    })
-});
+    btnInfo.forEach(element => {
+        element.addEventListener("click", function () {
+            var info = element.getAttribute("name")
+            var avlPelisFinal = JSON.parse(localStorage.getItem("ArbolPelis"));
+            var avlPelisFinal2 = new AVL(avlPelisFinal.raiz);
+            var PeliculaCont = document.getElementById("EspacioPelicula")
+            PeliculaCont.innerHTML = avlPelisFinal2.recorrePorPelicula(avlPelisFinal.raiz, info)
+
+            var Boton
+            Boton = document.getElementById("btn-Modificar")
+            Boton.addEventListener("click", function () {
+
+                var calificacion = JSON.parse(localStorage.getItem("ArbolPelis"));
+                var calificacionFinal = new AVL(calificacion.raiz);
+                var puntuacion
+                puntuacion = document.getElementById("text-stars").value
+                calificacionFinal.raiz = calificacionFinal.calificacion(calificacionFinal.raiz, info, puntuacion)
+                PeliculaCont.innerHTML = calificacionFinal.recorrePorPelicula(calificacionFinal.raiz, info)
+                localStorage.setItem("ArbolPelis", JSON.stringify(calificacionFinal));
+
+            })
+            var Boton2
+            Boton2 = document.getElementById("btn-publicar")
+            Boton2.addEventListener("click", function () {
+                
+                var coment = JSON.parse(localStorage.getItem("ArbolPelis"));
+                var comentarioFinal = new AVL(coment.raiz);
+                var comentario
+                comentario = document.getElementById("comentarioPublic").value
+               comentarioFinal.comentarios(comentarioFinal.raiz, info, comentario)
+                localStorage.setItem("ArbolPelis", JSON.stringify(comentarioFinal));
+    
+                PeliculaCont.innerHTML = comentarioFinal.recorrePorPelicula(comentarioFinal.raiz, info)
+               
+            })
+
+
+        })
+    });
 });
 
 
 /*Ver Actores PreOrden*/
 
 const btnVerActores = document.getElementById("btn-pre")
-btnVerActores.addEventListener("click" , function(){
-    var data = JSON.parse(localStorage.getItem("arbolActores"));   
-    var ArbolActores= new BinarioArbol(data.root);
+btnVerActores.addEventListener("click", function () {
+    var data = JSON.parse(localStorage.getItem("arbolActores"));
+    var ArbolActores = new BinarioArbol(data.root);
     var PeliculaCont = document.getElementById("EspacioPelicula")
-PeliculaCont.innerHTML = `<ol class="list-group list-group-numbered" style="margin-left: 200px; margin-right:200px;">
+    PeliculaCont.innerHTML = `<ol class="list-group list-group-numbered" style="margin-left: 200px; margin-right:200px;">
 ${ArbolActores.recorreActoresPre(ArbolActores.root)} </ol>
 `
 });
@@ -854,11 +1271,11 @@ ${ArbolActores.recorreActoresPre(ArbolActores.root)} </ol>
 /*Ver Actores PostOrden*/
 
 const btnVerActoresPost = document.getElementById("btn-post")
-btnVerActoresPost.addEventListener("click" , function(){
-    var data = JSON.parse(localStorage.getItem("arbolActores"));   
-    var ArbolActores= new BinarioArbol(data.root);
+btnVerActoresPost.addEventListener("click", function () {
+    var data = JSON.parse(localStorage.getItem("arbolActores"));
+    var ArbolActores = new BinarioArbol(data.root);
     var PeliculaCont = document.getElementById("EspacioPelicula")
-PeliculaCont.innerHTML = `<ol class="list-group list-group-numbered" style="margin-left: 200px; margin-right:200px;">
+    PeliculaCont.innerHTML = `<ol class="list-group list-group-numbered" style="margin-left: 200px; margin-right:200px;">
 ${ArbolActores.recorreActoresPost(ArbolActores.root)} </ol>
 `
 });
@@ -866,28 +1283,62 @@ ${ArbolActores.recorreActoresPost(ArbolActores.root)} </ol>
 /*Ver Actores InOrden*/
 
 const btnVerActoresIn = document.getElementById("btn-in")
-btnVerActoresIn.addEventListener("click" , function(){
-    var data = JSON.parse(localStorage.getItem("arbolActores"));   
-    var ArbolActores= new BinarioArbol(data.root);
+btnVerActoresIn.addEventListener("click", function () {
+    var data = JSON.parse(localStorage.getItem("arbolActores"));
+    var ArbolActores = new BinarioArbol(data.root);
     var PeliculaCont = document.getElementById("EspacioPelicula")
-PeliculaCont.innerHTML = `<ol class="list-group list-group-numbered" style="margin-left: 200px; margin-right:200px;">
+    PeliculaCont.innerHTML = `<ol class="list-group list-group-numbered" style="margin-left: 200px; margin-right:200px;">
 ${ArbolActores.recorreActoresIn(ArbolActores.root)} </ol>
 `
 });
 
 
-/*Informacion Pelicula*/
+/*Informacion Pelicula Principal*/
 
 var btnInfo = document.querySelectorAll("#Informacion")
 btnInfo.forEach(element => {
-    element.addEventListener("click", function() {
+    element.addEventListener("click", function () {
         var info = element.getAttribute("name")
         alert(info)
         var avlPelisFinal = JSON.parse(localStorage.getItem("ArbolPelis"));
-         var avlPelisFinal2 = new AVL(avlPelisFinal.raiz);
-         var PeliculaCont = document.getElementById("EspacioPelicula")
-         
-         PeliculaCont.innerHTML = avlPelisFinal2.recorrePorPelicula(avlPelisFinal2.raiz,info)
+        var avlPelisFinal2 = new AVL(avlPelisFinal.raiz);
+        var PeliculaCont = document.getElementById("EspacioPelicula")
+        PeliculaCont.innerHTML = avlPelisFinal2.recorrePorPelicula(avlPelisFinal2.raiz, info)
+
+
+        var Boton
+        Boton = document.getElementById("btn-Modificar")
+        Boton.addEventListener("click", function () {
+            var calificacion = JSON.parse(localStorage.getItem("ArbolPelis"));
+            var calificacionFinal = new AVL(calificacion.raiz);
+
+            var puntuacion
+            puntuacion = document.getElementById("text-stars").value
+            calificacionFinal.raiz = calificacionFinal.calificacion(calificacionFinal.raiz, info, puntuacion)
+            PeliculaCont.innerHTML = calificacionFinal.recorrePorPelicula(calificacionFinal.raiz, info)
+            localStorage.setItem("ArbolPelis", JSON.stringify(calificacionFinal));
+        })
+
+        var Boton2
+        Boton2 = document.getElementById("btn-publicar")
+        Boton2.addEventListener("click", function () {
+            
+            var coment = JSON.parse(localStorage.getItem("ArbolPelis"));
+            var comentarioFinal = new AVL(coment.raiz);
+            var comentario
+            comentario = document.getElementById("comentarioPublic").value
+           comentarioFinal.comentarios(comentarioFinal.raiz, info, comentario)
+            localStorage.setItem("ArbolPelis", JSON.stringify(comentarioFinal));
+
+            PeliculaCont.innerHTML = comentarioFinal.recorrePorPelicula(comentarioFinal.raiz, info)
+           
+        })
+
+
+
+
     })
-   
+
+
+
 });

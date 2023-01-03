@@ -1,4 +1,7 @@
 /* ================================================================================================= */
+
+import Canvas2Image from "./canva.js";
+
 /* ==== PELICULAS ================================================================================== */
 /Carga Masiva consts/
 const dropArea = document.querySelector("#drop-areaPeliculas");
@@ -857,7 +860,156 @@ btnActores.addEventListener("click" , function(){
 /* =========CATEGORIAS======================================================================================== */
 
 
+/Carga Masiva categorias/
+const dropAreaCat = document.querySelector("#drop-areaCategoria");
+const buttonCat = dropAreaCat.querySelector("button");
+const inputCat = dropAreaCat.querySelector("#input-fileCategoria");
 
+/Carga Masiva Categorias/
+buttonCat.addEventListener("click", (e)=>{
+    inputCat.click();
+});
+
+inputCat.addEventListener("change", ()=>{
+    processFileCat(inputCat.files[0]);
+});
+
+function processFileCat(file){
+        const fileReader = new FileReader();
+        
+        fileReader.addEventListener('load', e =>{            
+          //  if(!localStorage.getItem("ArbolPelis")){
+                const fileUrl = fileReader.result;
+                const archivo = JSON.parse(fileUrl);
+                alert("leido")
+                console.log(archivo)
+
+                //Arbol1 //
+
+                var ListaCategorias = JSON.parse(localStorage.getItem("ListaPelisOrden"));  //cambio
+                var ListaCategorias2 = new Lista(ListaCategorias.cabeza, ListaCategorias.size)
+            
+                archivo.forEach(element => {                    
+                   
+                    ListaCategorias2.insertar(element.id_pelicula, element.nombre_pelicula, element.descripcion, element.puntuacion_star, element.precion_Q, element.paginas, element.categoria); //cambio
+                    
+                    //console.log("insertando id "+element.id_pelicula);
+                });
+
+             
+                localStorage.setItem("ArbolPelis", JSON.stringify(ArbolPeliculas2));  //cambio
+                localStorage.setItem("ListaPelisOrden",JSON.stringify(ListaPeliculas)); //cambio
+              
+           // }
+        });   
+        fileReader.readAsText(file);
+};
+
+//------------Tabla Hash---------------------//
+
+class Nodo{
+    constructor(_value){
+        this.value = _value
+        this.next = null
+    }
+  }
+  
+  class Lista{
+    constructor(){
+        this.head = null
+        this.size = 0;
+    }
+  
+    //metodos de la lista
+    //insertar
+    insert(_value){
+      this.size++;
+      var tempo = new Nodo(_value)
+      tempo.next = this.head
+      this.head = tempo
+    }
+    //mostrar 
+    printList(){
+      var temporal = this.head
+      while(temporal!=null){
+          console.log(temporal.value)
+          temporal = temporal.next
+      }
+    }
+  
+    getSize(){
+      return this.size;
+    }
+  
+    isEmpty(){
+      return this.head === null ; 
+    }
+  }
+  
+  class TableHash{
+    constructor(size){
+      this.amount =0;
+      this.size =  size;
+      this.table = [];
+      for(let i = 0;i < size ; i++){
+        this.table.push(new Lista())
+      }
+    }
+  
+    insert(data){
+      var index = this.functionHash(data);
+      if(this.table[index].isEmpty()){
+        this.amount++;
+      }
+      this.table[index].insert(data);
+      this.rehashing()
+    }
+  
+    functionHash(data){
+      return data % this.size;
+    }
+  
+    rehashing(){
+      var porcentaje =this.amount/this.size
+      if(porcentaje>0.75){
+        var temp =this.table;
+        var tempSize = this.size
+        this.size = this.amount*5
+        this.table = []
+        for(let i = 0;i < this.size ; i++){
+          this.table.push(new Lista())
+        }
+        this.amount =0;
+        for(let i = 0;i < tempSize ; i++){
+          if(!temp[i].isEmpty()){
+            var nodo = temp[i].head;
+            while(nodo!=null){
+              this.insert(nodo.value);
+              nodo = nodo.next
+            }
+          }
+        }
+  
+      }
+      console.log(this.table,porcentaje);
+  
+    }
+  
+  }
+
+
+
+
+
+//Descarga de Graficas//
+
+function DescargaGrafica(){
+        var grafica = document.getElementById("grafica")
+        html2canvas(grafica).then(function(Graficar){
+            return Canvas2Image.saveAsPNG(Graficar)
+        })
+
+}
 
 
 
@@ -872,7 +1024,6 @@ if (localStorage.getItem("ArbolPelis") == null) {
     console.log(JSON.parse(localStorage.getItem("ArbolPelis")));
 };
 
-
 //Lista Orden Peliculas//
 
 if (localStorage.getItem("ListaPelisOrden") == null) {
@@ -881,3 +1032,31 @@ if (localStorage.getItem("ListaPelisOrden") == null) {
 } else {
     console.log(JSON.parse(localStorage.getItem("ListaPelisOrden")));
 };
+
+
+//----------Botones de Grafica----------//
+
+const buttonGrafPelis = document.querySelector("#GraficaPelis");
+
+buttonGrafPelis.addEventListener("click", (e)=>{
+    DescargaGrafica();
+});
+
+
+const buttonGraClientes = document.querySelector("#GraficaClientes");
+
+buttonGraClientes.addEventListener("click", (e)=>{
+    DescargaGrafica();
+});
+
+const buttonGrafActoes = document.querySelector("#GraficaActores");
+
+buttonGrafActoes.addEventListener("click", (e)=>{
+    DescargaGrafica();
+});
+
+const buttonGrafCategoria = document.querySelector("#GraficaCategorias");
+
+buttonGrafCategoria.addEventListener("click", (e)=>{
+    DescargaGrafica();
+});

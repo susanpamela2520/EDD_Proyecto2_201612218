@@ -18,7 +18,7 @@ class NodoAVL {
         this.derecho = null;
         this.altura = 0;
     }
-}
+};
 
 class AVL {
     //constructor() {
@@ -29,22 +29,21 @@ class AVL {
     constructor(raiz = null) {
         this.raiz = raiz;
         this.graphviz = ""
-    }
+    };
 
     MAXIMO(valor1, valor2) {
         if (valor1 > valor2) return valor1;
         return valor2;
-    }
+    };
 
     altura(nodo) {
         if (nodo == null) return -1;
         return nodo.altura;
-    }
+    };
 
     insertar(id_pelicula, nombre_pelicula, descripcion, puntuacion_star, precio_Q, paginas, categoria) {
         this.raiz = this.add(id_pelicula, nombre_pelicula, descripcion, puntuacion_star, precio_Q, paginas, categoria, this.raiz);
-    }
-
+    };
 
     add(id_pelicula, nombre_pelicula, descripcion, puntuacion_star, precio_Q, paginas, categoria, nodo) {
         if (nodo == null) return new NodoAVL(id_pelicula, nombre_pelicula, descripcion, puntuacion_star, precio_Q, paginas, categoria);
@@ -74,9 +73,7 @@ class AVL {
         }
         nodo.altura = this.MAXIMO(this.altura(nodo.izquierdo), this.altura(nodo.derecho)) + 1
         return nodo;
-    }
-
-
+    };
 
     RotacionIzquierda(nodo) {
         let aux = nodo.izquierdo;
@@ -166,7 +163,7 @@ class AVL {
         } else {
             this.explorarArbol(this.raiz);
         }
-    }
+    };
 
     //explorarArbol
     explorarArbol(node) {
@@ -184,11 +181,7 @@ class AVL {
             this.explorarArbol(node.izquierdo);
             this.explorarArbol(node.derecho);
         }
-    }
-
-
-
-
+    };
 
     recorrePelicula(temporal) {
         var text = ""
@@ -217,7 +210,6 @@ class AVL {
         }
         return text
     };
-
 
     /*Vista por Pelicula*/
 
@@ -275,9 +267,6 @@ class AVL {
         return text
     };
 
-
-
-
     calificacion(raiz, nombre_pelicula, puntuacion_star) {
 
         if (raiz != null) {
@@ -293,8 +282,6 @@ class AVL {
         }
         return raiz;
     };
-
-
 
     comentarios(raiz, nombre_pelicula, comentario) {
 
@@ -312,11 +299,7 @@ class AVL {
 
     };
 
-
-
-
 };
-
 
 
 /*Mostrar Datos en el html*/
@@ -509,7 +492,6 @@ class listaSimpleComent {//clase lista, donde se crea la lista simple
         this.size = size;
     }
 
-
     //Se agregan los datos a la lista
 
     agregarDataComent(nombre_clientePost, comentario) {
@@ -527,10 +509,7 @@ class listaSimpleComent {//clase lista, donde se crea la lista simple
         this.size++;
     };
 
-
-
-}
-
+};
 
 //Recorrido Arreglo//
 
@@ -908,7 +887,7 @@ class Bloque {
         this.rootmerkle = rootmerkle;
         this.hash = hash;
     }
-}
+};
 
 class Node {
     constructor(_value) {
@@ -1013,7 +992,6 @@ class BlockChain {
     }
 }
 
-
 var blockChain = new BlockChain();
 var time = 300000
 //var time = 60000
@@ -1024,7 +1002,6 @@ var as = setInterval(() => {
     console.log(blockChain)
 
 }, time)
-
 
 function generarBloque() {
     blockChain.generarBloque();
@@ -1116,7 +1093,6 @@ class Merkle {
 
 var index = 0
 
-
 var merkle = new Merkle()
 
 class alquiler {
@@ -1180,7 +1156,7 @@ ${ArbolPeliculas2A.mostrarListaSimpleOrden()} </div>
                 localStorage.setItem("ArbolPelis", JSON.stringify(calificacionFinal));
 
             })
-            
+
             var Boton2
             Boton2 = document.getElementById("btn-publicar")
             Boton2.addEventListener("click", function () {
@@ -1305,7 +1281,6 @@ btnInfo.forEach(element => {
         var PeliculaCont = document.getElementById("EspacioPelicula")
         PeliculaCont.innerHTML = avlPelisFinal2.recorrePorPelicula(avlPelisFinal2.raiz, info)
 
-
         var Boton
         Boton = document.getElementById("btn-Modificar")
         Boton.addEventListener("click", function () {
@@ -1334,11 +1309,6 @@ btnInfo.forEach(element => {
            
         })
 
-
-
-
     })
-
-
 
 });

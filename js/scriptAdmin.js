@@ -886,19 +886,19 @@ function processFileCat(file){
 
                 //Arbol1 //
 
-                var ListaCategorias = JSON.parse(localStorage.getItem("ListaPelisOrden"));  //cambio
-                var ListaCategorias2 = new Lista(ListaCategorias.cabeza, ListaCategorias.size)
+                var ListaCategorias = JSON.parse(localStorage.getItem("ListaCat"));  //cambio
+                var ListaCategorias2 = new TableHash(ListaCategorias.table, ListaCategorias.size)
             
                 archivo.forEach(element => {                    
                    
-                    ListaCategorias2.insertar(element.id_pelicula, element.nombre_pelicula, element.descripcion, element.puntuacion_star, element.precion_Q, element.paginas, element.categoria); //cambio
+                    ListaCategorias2.insert(element.id_categoria, element.company); //cambio
                     
                     //console.log("insertando id "+element.id_pelicula);
                 });
 
              
-                localStorage.setItem("ArbolPelis", JSON.stringify(ArbolPeliculas2));  //cambio
-                localStorage.setItem("ListaPelisOrden",JSON.stringify(ListaPeliculas)); //cambio
+                localStorage.setItem("ListaCat", JSON.stringify(ListaCategorias2));  //cambio
+              
               
            // }
         });   
@@ -908,34 +908,28 @@ function processFileCat(file){
 //------------Tabla Hash---------------------//
 
 class Nodo{
-    constructor(_value){
-        this.value = _value
-        this.next = null
+    constructor(id_categoria, company){
+        this.id_categoria = id_categoria
+        this.company = company
+        this.siguiente = null
     }
   }
   
   class Lista{
-    constructor(){
-        this.head = null
-        this.size = 0;
+    constructor(head = null, size=0){
+        this.head = head
+        this.size = size;
     }
   
     //metodos de la lista
     //insertar
-    insert(_value){
+    insert(id_categoria, company){
       this.size++;
-      var tempo = new Nodo(_value)
-      tempo.next = this.head
+      var tempo = new Nodo(id_categoria, company)
+      tempo.siguiente = this.head
       this.head = tempo
     }
-    //mostrar 
-    printList(){
-      var temporal = this.head
-      while(temporal!=null){
-          console.log(temporal.value)
-          temporal = temporal.next
-      }
-    }
+    
   
     getSize(){
       return this.size;
@@ -947,26 +941,26 @@ class Nodo{
   }
   
   class TableHash{
-    constructor(size){
+    constructor(table = [], size){
       this.amount =0;
       this.size =  size;
-      this.table = [];
+      this.table = table;
       for(let i = 0;i < size ; i++){
         this.table.push(new Lista())
       }
     }
   
-    insert(data){
-      var index = this.functionHash(data);
+    insert(id_categoria, company){
+      var index = this.functionHash(id_categoria);
       if(this.table[index].isEmpty()){
         this.amount++;
       }
-      this.table[index].insert(data);
+      this.table[index].insert(id_categoria, company);
       this.rehashing()
     }
   
-    functionHash(data){
-      return data % this.size;
+    functionHash(id_categoria){
+      return id_categoria % this.size;
     }
   
     rehashing(){
@@ -984,8 +978,8 @@ class Nodo{
           if(!temp[i].isEmpty()){
             var nodo = temp[i].head;
             while(nodo!=null){
-              this.insert(nodo.value);
-              nodo = nodo.next
+              this.insert(nodo.id_categoria, nodo.company);
+              nodo = nodo.siguiente
             }
           }
         }
@@ -994,8 +988,86 @@ class Nodo{
       console.log(this.table,porcentaje);
   
     }
-  
+
+    grafoCat() {
+        var categoriaActual = table
+        var codigodot = ""
+        var contador = 0;
+        categoriaActual.forEach(ArtistaActual => {
+            var temporal = ArtistaActual.head;
+            var conex = "";
+            var nodos = "";
+            var sizegraph = 0;
+            let artista = String(ArtistaActual.id_categoria);
+            if (temporal != null) {
+                codigodot += "N" + contador + " -> N0" + artista + ";\n";
+            }
+
+            while (temporal != null) {
+                nodos += "N" + sizegraph + artista + "[label=\"" + temporal.id_categoria + "\", style=filled, fillcolor=seashell2, color=pink];\n"
+                if (temporal.siguiente != null) {
+                    var auxnum = sizegraph + 1;
+                    conex += "N" + sizegraph + ArtistaActual.id_categoria.replace(" ", "") + " -> N" + auxnum + ArtistaActual.id_categoria.replace(" ", "") + ";\n";
+                }
+                temporal = temporal.siguiente;
+                sizegraph++;
+            }
+            codigodot += "//agregando nodos\n"
+            codigodot += nodos + "\n"
+            codigodot += "//agregado conexiones o flechas\n"
+            codigodot += "{\n" + conex + "\n}"
+            ArtistaActual = ArtistaActual.siguiente
+            contador++
+        });
+       
+        return codigodot
+    }
+
+
+    grafo() {
+        var codigodot = "digraph G{\nlabel=\" \";\n edge[dir = \"both\"];\n node [shape=box];\n";
+        var temporal = table;
+        var conex = "";
+        var nodos = "";
+        var sizegraph = 0;
+        temporal.forEach(element => {
+            nodos += "N" + sizegraph + "[label=\"" + element.id_categoria + "\" ];\n"
+        
+            var auxnum = sizegraph + 1;
+            conex += "N" + sizegraph + " -> N" + auxnum + ";\n";
+            sizegraph++;
+        });
+        
+        codigodot += "//agregando nodos\n"
+        codigodot += nodos + "\n"
+        codigodot += this.grafoCat()
+        codigodot += "//agregado conexiones o flechas\n"
+        codigodot += "{\n" + conex + "\n}\n}"
+        console.log(codigodot);
+        //document.write(codigodot)
+        this.generarImagen(codigodot);
+    }
+
+    generarImagen(codigodot) {
+        var picture = document.getElementById("contenedor2")
+        picture.innerHTML = ""
+        picture.innerHTML = "<div id=\"grafica\"></div>"
+        d3.select("#grafica")
+            .graphviz()
+            .fit(true)
+            .renderDot(codigodot)
+
+    }
   }
+
+  const btnListaCat = document.getElementById("bt-Cat")
+    btnListaCat.addEventListener("click" , function(){
+    var data = JSON.parse(localStorage.getItem("ListaCat"));   
+    console.log(data);
+    var Cat = new TableHash(data.table, data.size); 
+    Cat.generarImagen();
+    //ArbolB.render();
+});
 
 
 
@@ -1010,7 +1082,6 @@ function DescargaGrafica(){
         })
 
 }
-
 
 
 //VERIFICACIONES DE CREACION DE ESTRUCTURAS//
@@ -1032,6 +1103,19 @@ if (localStorage.getItem("ListaPelisOrden") == null) {
 } else {
     console.log(JSON.parse(localStorage.getItem("ListaPelisOrden")));
 };
+
+
+
+//Grafica Tabla Hash//
+
+if (localStorage.getItem("ListaCat") == null) {
+    var ListaCat = new TableHash([], 20);
+    localStorage.setItem("ListaCat", JSON.stringify(ListaCat));
+} else {
+    console.log(JSON.parse(localStorage.getItem("ListaCat")));
+};
+
+
 
 
 //----------Botones de Grafica----------//
